@@ -1,0 +1,19 @@
+{
+  "name": "nextwavebackend",
+  "version": "1.0.0",
+  "description": "deeznuts",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "run": "tsc && node dist/index.js"
+  },
+  "author": "Gipfelienjoyer",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
