@@ -1,0 +1,56 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User_Table {
+  User_ID         Int           @id @default(autoincrement())
+  Email           String        @unique
+  Account_Created DateTime      @default(now())
+  Account_Updated DateTime      @updatedAt
+  Appointments    Appointment[]
+  ToDo_Lists      ToDo_List[]
+}
+
+model Appointment {
+  Appointments_ID           Int        @id @default(autoincrement())
+  User_ID                   Int
+  Appointments_Title        String
+  Appointments_Description  String?
+  Appointments_Start_Date   DateTime
+  Appointments_Finish_Date  DateTime
+  Appointments_Start_Time   DateTime?
+  Appointments_Finish_Time  DateTime?
+  Appointments_Full_Day     Boolean    @default(false)
+  Appointments_Participants String?
+  Appointments_Created      DateTime   @default(now())
+  Appointments_Updated      DateTime   @updatedAt
+  User_Table                User_Table @relation(fields: [User_ID], references: [User_ID])
+}
+
+model ToDo_List {
+  ToDo_List_ID      Int         @id @default(autoincrement())
+  User_ID           Int
+  ToDo_List_Title   String?
+  ToDo_List_Desc    String?
+  ToDo_List_Created DateTime    @default(now())
+  ToDo_List_Updated DateTime    @updatedAt
+  User_Table        User_Table  @relation(fields: [User_ID], references: [User_ID])
+  ToDo_Items        ToDo_Item[]
+}
+
+model ToDo_Item {
+  ToDo_Item_ID          Int       @id @default(autoincrement())
+  ToDo_List_ID          Int
+  ToDo_Item_Title       String
+  ToDo_Item_Description String?
+  ToDo_Item_Status      String    @default("Not Started")
+  ToDo_Item_Due_Date    DateTime?
+  ToDo_Item_Created     DateTime  @default(now())
+  ToDo_Item_Updated     DateTime  @updatedAt
+  ToDo_List             ToDo_List @relation(fields: [ToDo_List_ID], references: [ToDo_List_ID])
+}
