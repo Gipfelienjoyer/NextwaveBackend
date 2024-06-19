@@ -197,6 +197,29 @@ app.put('/todo-items/:todoItemId', async (req: Request, res: Response) => {
   }
 });
 
+//getAllLists
+app.get('/listTitles', async (req: Request, res: Response) => {
+  const UserId = parseInt(req.params.userId)
+
+  try {
+    const todoLists = await prisma.toDo_List.findMany({
+      where: {
+        User_ID: UserId,
+      },
+      select: {
+        ToDo_List_Title: true,
+      },
+    });
+
+    const listTitles = todoLists.map(list => list.ToDo_List_Title);
+    res.json(listTitles);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching todo list titles.' });
+  }
+
+})
+
 // Start the Express server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
